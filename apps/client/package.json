@@ -1,0 +1,42 @@
+{
+  "name": "@mealgpt/client",
+  "scripts": {
+    "dev": "next dev",
+    "lint": "next lint",
+    "preview": "next build && next start",
+    "start": "next start",
+    "test": "concurrently \"pnpm test:app\"",
+    "test:app": "jest --passWithNoTests",
+    "vercel": "vercel"
+  },
+  "dependencies": {
+    "@headlessui/react": "1.7.14",
+    "@heroicons/react": "2.0.17",
+    "@hookform/resolvers": "3.1.0",
+    "@stripe/stripe-js": "1.52.1",
+    "aws-amplify": "^5.1.4",
+    "aws-crt": "^1.15.15",
+    "encoding": "^0.1.13",
+    "graphql-tag": "2.12.6",
+    "next": "13.3.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "7.43.9",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "5.16.4",
+    "@testing-library/react": "14.0.0",
+    "@testing-library/user-event": "14.4.3",
+    "@types/node": "18.16.3",
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.1",
+    "@types/testing-library__jest-dom": "5.14.5",
+    "autoprefixer": "10.4.14",
+    "eslint": "8.39.0",
+    "jest-environment-jsdom": "29.5.0",
+    "postcss": "8.4.23",
+    "tailwindcss": "3.3.2",
+    "vercel": "^29.0.3"
+  }
+}

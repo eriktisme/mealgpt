@@ -1,0 +1,144 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  CI: true
+  CACHE_BUILD_ARTEFACTS_NAME: 'cache-build-artefacts'
+  CACHE_BUILD_ARTEFACTS_PATH: packages/**/dist
+  NEXT_PUBLIC_API: ''
+  NEXT_PUBLIC_PREFIX: 'test'
+  NEXT_PUBLIC_COGNITO_USER_POOL_ID: ''
+  NEXT_PUBLIC_COGNITO_USER_POOL_CLIENT_ID: ''
+  NEXT_PUBLIC_COGNITO_USER_POOL_DOMAIN: ''
+  NEXT_PUBLIC_COGNITO_REDIRECT_URL: ''
+
+jobs:
+  dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.1.0
+          run_install: false
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [dependencies]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.1.0
+          run_install: false
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ env.CACHE_BUILD_ARTEFACTS_PATH }}
+          key: ${{ runner.os }}-build-${{ env.CACHE_BUILD_ARTEFACTS_NAME }}-${{ github.run_id }}
+
+      - uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: 'master'
+
+      - run: pnpm codegen
+
+      - run: pnpm build
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: [build]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.1.0
+          run_install: false
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ env.CACHE_BUILD_ARTEFACTS_PATH }}
+          key: ${{ runner.os }}-build-${{ env.CACHE_BUILD_ARTEFACTS_NAME }}-${{ github.run_id }}
+
+      - uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: 'master'
+
+      - run: pnpm codegen
+
+      - run: pnpm lint
+
+  tests:
+    runs-on: ubuntu-latest
+    needs: [build]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.1.0
+          run_install: false
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ env.CACHE_BUILD_ARTEFACTS_PATH }}
+          key: ${{ runner.os }}-build-${{ env.CACHE_BUILD_ARTEFACTS_NAME }}-${{ github.run_id }}
+
+      - uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: 'master'
+
+      - run: pnpm codegen
+
+      - run: pnpm test -- --coverage

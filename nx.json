@@ -1,0 +1,16 @@
+{
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "cdk", "lint", "test", "test:cdk"]
+      }
+    }
+  },
+  "targetDefaults": {
+    "cdk": {
+      "dependsOn": ["^build", "^cdk"]
+    }
+  },
+  "defaultBase": "master"
+}
