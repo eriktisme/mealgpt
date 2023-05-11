@@ -1,7 +1,7 @@
 import logo from '../../public/logo.svg'
 import Image from 'next/image'
-import Link from 'next/link'
 import { site } from '@/config'
+import { SocialLoginForm } from './SocialLoginForm'
 
 export const SiteHeader = () => (
   <header className="mx-auto w-full max-w-7xl px-4 py-10 lg:px-8">
@@ -11,12 +11,7 @@ export const SiteHeader = () => (
       </div>
       <nav></nav>
       <div>
-        <Link
-          href="/login"
-          className="rounded-md bg-black px-4 py-3 text-sm font-semibold text-white shadow-sm"
-        >
-          Login
-        </Link>
+        <SocialLoginForm>Log in with Google</SocialLoginForm>
       </div>
     </div>
   </header>

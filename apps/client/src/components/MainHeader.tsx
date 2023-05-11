@@ -13,7 +13,7 @@ export const MainHeader = ({ user }: MainHeaderProps) => {
         <MainNav
           items={[
             { href: '/dashboard', title: 'Dashboard' },
-            { href: '#', title: 'Test' },
+            { href: '/plans', title: 'Meal Plans' },
           ]}
         />
         <UserAccountNav user={user} />

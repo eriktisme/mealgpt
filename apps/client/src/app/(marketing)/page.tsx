@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { SocialLoginForm } from '@/components'
 
 export default function Home() {
   return (
@@ -17,12 +17,7 @@ export default function Home() {
         needs and track your meals to follow your progress.
       </p>
       <div className="mt-10 flex justify-center">
-        <Link
-          href="/login"
-          className="rounded-md bg-black px-4 py-3 text-sm font-semibold text-white shadow-sm"
-        >
-          Get Started
-        </Link>
+        <SocialLoginForm>Get started</SocialLoginForm>
       </div>
     </div>
   )
